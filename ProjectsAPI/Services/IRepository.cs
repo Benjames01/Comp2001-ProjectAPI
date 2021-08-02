@@ -8,6 +8,8 @@ namespace ProjectsAPI.Services
 {
     public interface IRepository
     {
+        Task<List<Project>> GetAllProjects();
+        Task<List<User>> GetAllUsers();
         Task<List<Role>> GetAllRoles();
         Task<Role> GetRoleById(int Id);
 

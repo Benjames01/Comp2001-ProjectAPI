@@ -29,10 +29,9 @@ namespace ProjectsAPI.Controllers
         }
 
         [HttpGet] // Provides view of all projects for a programme
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult<List<Project>>> Get()
         {
-            await Task.Delay(1);
-            return NoContent();
+            return await repository.GetAllProjects();
         }
 
         [HttpPut("{Id:int}")] // api/projects/{id} - Update an existing project
