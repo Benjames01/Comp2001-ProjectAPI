@@ -10,5 +10,8 @@ namespace ProjectsAPI.Services
     {
         Task<List<Role>> GetAllRoles();
         Task<Role> GetRoleById(int Id);
+
+        Task<bool> IsUserIdValid(int Id);
+        Task<bool> IsRoleIdValid(int Id);
     }
 }

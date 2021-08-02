@@ -33,5 +33,22 @@ namespace ProjectsAPI.Services
             await Task.Delay(1); // simulated delay for a DB connection
             return _roles.FirstOrDefault(x => x.Id == Id);
         }
+
+        public async Task<bool> IsRoleIdValid(int Id)
+        {
+            await Task.Delay(1);
+            return GetRoleById(Id) != null;
+        }
+
+        public async Task<bool> IsUserIdValid(int Id)
+        {
+            await Task.Delay(1);
+            if (Id > 10)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }
