@@ -72,33 +72,28 @@ namespace ProjectsAPI.Controllers
         public async Task<ActionResult> Put(int Id, [FromBody] ProjectUpdateDTO projectUpdate)
         {
 
-            Project original = await context.Projects.AsNoTracking().FirstAsync(x => x.Id == Id);
-            if (original == null)
-            {
-                return NotFound();  // status code: 404
-            }
+            Project original = await context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
+            if (original == null) { return NotFound(); } // status code: 404
 
             var project = mapper.Map<Project>(projectUpdate);
             project.Id = Id;
             project.UserId = original.UserId;
 
             // partial updates until patch
-            if (project.Title == null)
+            if (string.IsNullOrEmpty(project.Title))
             {
                 project.Title = original.Title;
             }
 
-            if (project.Description == null)
+            if (string.IsNullOrEmpty(project.Description))
             {
                 project.Description = original.Description;
             }
 
-            if (project.Year == null)
+            if (string.IsNullOrEmpty(project.Year))
             {
                 project.Year = original.Year;
             }
-
-            context.Entry(project).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
 
