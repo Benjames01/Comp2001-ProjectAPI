@@ -26,10 +26,10 @@ namespace ProjectsAPI.Services
 
             _users = new List<User>()
             {
-                new User{Id = 1, Name = "Student 0", ProgrammeID = 1},
-                new User{Id = 2, Name = "Student 1", ProgrammeID = 1},
-                new User{Id = 3, Name = "Student 2", ProgrammeID = 1},
-                new User{Id = 4, Name = "Lecturer 0", ProgrammeID = 2}
+                new User{Id = 1, Name = "Student 0", ProgrammeId = 1},
+                new User{Id = 2, Name = "Student 1", ProgrammeId = 1},
+                new User{Id = 3, Name = "Student 2", ProgrammeId = 1},
+                new User{Id = 4, Name = "Lecturer 0", ProgrammeId = 2}
             };
 
             _projects = new List<Project>()

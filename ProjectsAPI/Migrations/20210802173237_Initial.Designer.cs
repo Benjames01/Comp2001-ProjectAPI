@@ -9,8 +9,8 @@ using ProjectsAPI;
 namespace ProjectsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210802152047_second")]
-    partial class second
+    [Migration("20210802173237_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,9 @@ namespace ProjectsAPI.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -62,6 +64,8 @@ namespace ProjectsAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Projects");
                 });
 
@@ -76,12 +80,46 @@ namespace ProjectsAPI.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
-                    b.Property<int>("ProgrammeID")
+                    b.Property<int>("ProgrammeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProgrammeId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.Project", b =>
+                {
+                    b.HasOne("ProjectsAPI.Entities.User", "User")
+                        .WithMany("Projects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.User", b =>
+                {
+                    b.HasOne("ProjectsAPI.Entities.Programme", "Programme")
+                        .WithMany("Users")
+                        .HasForeignKey("ProgrammeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Programme");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.Programme", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.User", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

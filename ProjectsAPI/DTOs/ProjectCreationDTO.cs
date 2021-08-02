@@ -1,18 +1,17 @@
 ﻿using ProjectsAPI.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ProjectsAPI.Entities
+namespace ProjectsAPI.DTOs
 {
-    public class Project
+    public class ProjectCreationDTO
     {
-        public int Id { get; set; } // Project ID
-
         [Required(ErrorMessage = "A user Id must be provided")]
         [UserIdExists]
         public int UserId { get; set; } // Student ID
-        public User User { get; set; }
 
         [Required(ErrorMessage = "Title is required with max length of 30 characters")]
         [StringLength(30)]
@@ -25,5 +24,6 @@ namespace ProjectsAPI.Entities
         [Required]
         [StringLength(30)]
         public string Year { get; set; }
+
     }
 }

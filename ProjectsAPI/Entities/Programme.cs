@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsAPI.Entities
 {
@@ -9,5 +10,7 @@ namespace ProjectsAPI.Entities
         [Required]
         [StringLength(40)]
         public string Name { get; set; } // Name of programme
+
+        public ICollection<User> Users { get; set; }
     }
 }

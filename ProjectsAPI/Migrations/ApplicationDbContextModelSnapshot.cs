@@ -62,6 +62,8 @@ namespace ProjectsAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Projects");
                 });
 
@@ -76,12 +78,46 @@ namespace ProjectsAPI.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
-                    b.Property<int>("ProgrammeID")
+                    b.Property<int>("ProgrammeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProgrammeId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.Project", b =>
+                {
+                    b.HasOne("ProjectsAPI.Entities.User", "User")
+                        .WithMany("Projects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.User", b =>
+                {
+                    b.HasOne("ProjectsAPI.Entities.Programme", "Programme")
+                        .WithMany("Users")
+                        .HasForeignKey("ProgrammeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Programme");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.Programme", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ProjectsAPI.Entities.User", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }
