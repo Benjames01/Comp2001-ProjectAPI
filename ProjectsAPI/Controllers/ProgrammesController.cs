@@ -1,42 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectsAPI.Entities;
 using ProjectsAPI.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectsAPI.Controllers
 {
-    [Route("api/roles")]
-    public class RolesController : ControllerBase
+    [Route("api/programmes")]
+    public class ProgrammesController : ControllerBase
     {
-
         private readonly IRepository repository;
 
-        public RolesController(IRepository repository)
+        public ProgrammesController(IRepository repository)
         {
             this.repository = repository;
         }
 
-        [HttpGet] // api/roles
-        [HttpGet("/allroles")]
-        public async Task<ActionResult<List<Role>>> Get()
+        [HttpGet] // api/programmes
+        [HttpGet("/allprogrammes")]
+        public async Task<ActionResult<List<Programme>>> Get()
         {
-            return await repository.GetAllRoles();
+            return await repository.GetAllProgrammes();
         }
 
-        [HttpGet("{Id:int}")] // api/roles/{id} -  can pass value in {id}
-        public async Task<ActionResult<Role>> Get(int Id)
+        [HttpGet("{Id:int}")] // api/programmes/{id} -  can pass value in {id}
+        public async Task<ActionResult<Programme>> Get(int Id)
         {
-            var role = repository.GetRoleById(Id);
+            var programme = repository.GetProgrammeById(Id);
 
-            if (role == null)
+            if (programme == null)
             {
                 return NotFound();
             }
 
-            return await role; 
+            return await programme;
         }
 
         [HttpPost]
@@ -56,6 +53,5 @@ namespace ProjectsAPI.Controllers
         {
             return NoContent();
         }
-
     }
 }

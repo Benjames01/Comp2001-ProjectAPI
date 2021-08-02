@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsAPI.Entities
 {
     public class User
     {
         public int Id { get; set; }
+        [StringLength(70)]
         public string Name { get; set; }
-        public int RoleID { get; set; }
+        [Required]
+        public int ProgrammeID { get; set; }
     }
 }

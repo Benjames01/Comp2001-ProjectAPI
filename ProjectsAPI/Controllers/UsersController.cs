@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectsAPI.Services;
-
+using System.Threading.Tasks;
 
 namespace ProjectsAPI.Controllers
 {
@@ -29,7 +23,8 @@ namespace ProjectsAPI.Controllers
             {
                 // User Id doesn't exist in repository
                 return Json(false, System.Web.Mvc.JsonRequestBehavior.AllowGet);
-            } else
+            }
+            else
             {
                 // User Id exists
                 return Json(true, System.Web.Mvc.JsonRequestBehavior.AllowGet);
