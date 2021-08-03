@@ -20,17 +20,14 @@ namespace ProjectsAPI.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly ApplicationDbContext context; // Database access
-        private readonly ILogger<ProjectsController> logger;
         private readonly IMapper mapper;
         private readonly IHttpContextAccessor httpContextAccessor;
 
         public ProjectsController(ApplicationDbContext context,
-            ILogger<ProjectsController> logger,
             IMapper mapper,
             IHttpContextAccessor httpContextAccessor) //repository is injected into constructor
         {
             this.context = context;
-            this.logger = logger;
             this.mapper = mapper;
             this.httpContextAccessor = httpContextAccessor;
         }
@@ -69,7 +66,6 @@ namespace ProjectsAPI.Controllers
         //[ResponseCache(Duration = 60)] would be used to cache results to prevent spam
         public async Task<ActionResult<List<ProjectDTO>>> Get()
         {
-            logger.LogInformation("Get projects executed.");
             var projects = await context.Projects.AsNoTracking().ToListAsync();
             var projectsDTOs = mapper.Map<List<ProjectDTO>>(projects);
 
@@ -101,19 +97,16 @@ namespace ProjectsAPI.Controllers
 
             if (string.IsNullOrEmpty(project.Title))
             {
-                logger.LogInformation("Using original title for project.");
                 project.Title = original.Title;
             }
               
             if (string.IsNullOrEmpty(project.Description))
             {
-                logger.LogInformation("Using original description for project.");
                 project.Description = original.Description;
             }
 
             if (string.IsNullOrEmpty(project.Year))
             {
-                logger.LogInformation("Using original year for project.");
                 project.Year = original.Year;
             }
 

@@ -32,13 +32,11 @@ namespace ProjectsAPI.Controllers
         public AccountsController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signinManager,
-            IConfiguration configuration,
             ApplicationDbContext context,
             IMapper mapper)
         {
             _userManager = userManager;
             _signinManager = signinManager;
-            _configuration = configuration;
             _mapper = mapper;
             _context = context;
         }
@@ -52,7 +50,7 @@ namespace ProjectsAPI.Controllers
             return studentsDTO;
         }
 
-        [HttpGet("{studentId:int}/projects")] // [api/students/projects/{studentID}] - get all student's projects
+        [HttpGet("{studentId:int}/projects")] // [api/students/{studentID}/projects] - get all student's projects
         public async Task<ActionResult<List<ProjectDTO>>> Get(int studentId)
         {
 
@@ -110,7 +108,7 @@ namespace ProjectsAPI.Controllers
 
         [HttpPost("RenewToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<AccountToken>> Renew()
+        public ActionResult<AccountToken> Renew()
         {
             var accountData = new AccountData
             {
