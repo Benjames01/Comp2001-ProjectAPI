@@ -1,30 +1,35 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectsAPI.Entities;
+using ProjectsAPI.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectsAPI
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public ApplicationDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
         }
 
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             base.OnModelCreating(builder);
+        }
+
+        internal Task<ActionResult<List<Programme>>> GetAllProgrammes()
+        {
+            throw new NotImplementedException();
         }
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<Programme> Programmes { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> Students { get; set; }
 
         public async Task<Project> GetProjectById(int Id)
         {
@@ -32,10 +37,10 @@ namespace ProjectsAPI
             return project;
         }
 
-        public async Task<bool> IsUserIdValid(int Id)
+        public async Task<bool> IsStudentIdValid(int Id)
         {
-            var isValid = await Users.AnyAsync(x => x.Id == Id);
-            return isValid;  
+            var isValid = await Students.AnyAsync(x => x.Id == Id);
+            return isValid;
         }
 
         public async Task<bool> IsProgrammeIdValid(int Id)

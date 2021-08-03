@@ -1,8 +1,4 @@
-﻿using ProjectsAPI.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace ProjectsAPI.Validations
@@ -19,11 +15,11 @@ namespace ProjectsAPI.Validations
 
             if (!result)
             {
-                return new ValidationResult("User Id doesn't exist in repository.");
+                return new ValidationResult("Programme Id doesn't exist in repository.");
             }
             else
 
                 return ValidationResult.Success;
         }
-    } 
+    }
 }

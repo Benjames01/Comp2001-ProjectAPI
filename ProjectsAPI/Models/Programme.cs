@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ProjectsAPI.Infrastructure;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsAPI.Entities
@@ -7,10 +8,11 @@ namespace ProjectsAPI.Entities
     {
         [Required]
         public int Id { get; set; } // Level of authority
+
         [Required]
         [StringLength(40)]
         public string Name { get; set; } // Name of programme
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<ApplicationUser> Students { get; set; }
     }
 }

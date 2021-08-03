@@ -1,7 +1,6 @@
-﻿using ProjectsAPI.Validations;
-using System.Collections.Generic;
+﻿using ProjectsAPI.Infrastructure;
+using ProjectsAPI.Validations;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectsAPI.Entities
 {
@@ -10,9 +9,10 @@ namespace ProjectsAPI.Entities
         public int Id { get; set; } // Project ID
 
         [Required(ErrorMessage = "A user Id must be provided")]
-        [UserIdExists]
-        public int UserId { get; set; } // Student ID
-        public User User { get; set; }
+        [StudentIdExists]
+        public int ApplicationUserId { get; set; } // Student ID
+
+        public ApplicationUser ApplicationUser { get; set; }
 
         [Required(ErrorMessage = "Title is required with max length of 30 characters")]
         [StringLength(30)]
