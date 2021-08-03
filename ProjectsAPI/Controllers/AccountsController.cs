@@ -32,6 +32,7 @@ namespace ProjectsAPI.Controllers
         public AccountsController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signinManager,
+            IConfiguration configuration,
             ApplicationDbContext context,
             IMapper mapper)
         {
@@ -39,6 +40,7 @@ namespace ProjectsAPI.Controllers
             _signinManager = signinManager;
             _mapper = mapper;
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet] // [api/accounts] - get all students

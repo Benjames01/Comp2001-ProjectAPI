@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProjectsAPI.DTOs;
@@ -37,13 +38,23 @@ namespace ProjectsAPI.Controllers
         public async Task<ActionResult> Post([FromBody] ProjectCreationDTO projectCreation)
         {
             int id = (await GetStudent()).Id; // Get the logged in user's id
-            var project = mapper.Map<Project>(projectCreation);
+            var project = mapper.Map<Project>(projectCreation); // Map from creation DTO to project
             project.ApplicationUserId = id;
 
-            context.Add(project);
-            await context.SaveChangesAsync();
-            var projectDTO = mapper.Map<ProjectDTO>(project);
+             var parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@StudentId", project.ApplicationUserId),
+                new SqlParameter("@Title", project.Title),
+                new SqlParameter("@Description", project.Description),
+                new SqlParameter("@Year", project.Year)
+            };
 
+            // Execute the stored procedure
+            var dbProjects = await context.Projects.FromSqlRaw("exec sp_InsertProject @StudentId, @Title, @Description, @Year",
+                parameters.ToArray()).ToListAsync();
+
+            // Map to the output DTO, this allows easy future expansion of the project model
+            var projectDTO = mapper.Map<ProjectDTO>( dbProjects[0]);
             return new CreatedAtRouteResult("getProject", new { Id = projectDTO.Id }, projectDTO);
         }
 
@@ -82,14 +93,14 @@ namespace ProjectsAPI.Controllers
         public async Task<ActionResult> Put(int Id, [FromBody] ProjectUpdateDTO projectUpdate)
         {
            
+            Project original = await context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
+            if (original == null) { return NotFound(); } // status code: 404
+
             // Only update if this project belongs to logged in user
-            if(Id != (await GetStudent()).Id)
+            if ( original.ApplicationUserId != (await GetStudent()).Id)
             {
                 return BadRequest();
             }
-
-            Project original = await context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
-            if (original == null) { return NotFound(); } // status code: 404
 
             var project = mapper.Map<Project>(projectUpdate);
             project.Id = Id;
@@ -109,9 +120,19 @@ namespace ProjectsAPI.Controllers
             {
                 project.Year = original.Year;
             }
+  
+            var parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@StudentId", project.ApplicationUserId),
+                new SqlParameter("@Title", project.Title),
+                new SqlParameter("@Description", project.Description),
+                new SqlParameter("@Year", project.Year),
+                new SqlParameter("@Id", project.Id)
+            };
 
-            context.Entry(project).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            // Execute the stored procedure
+            var dbProjects = await context.Projects.FromSqlRaw("exec sp_UpdateProject @StudentId, @Title, @Description, @Year, @Id",
+                parameters.ToArray()).ToListAsync();
 
             return NoContent(); // status code: 204
         }
@@ -139,9 +160,7 @@ namespace ProjectsAPI.Controllers
                 return BadRequest();
             }
 
-
-            context.Remove(new Project() { Id = Id });
-            await context.SaveChangesAsync();
+            context.Database.ExecuteSqlRaw("exec sp_DeleteProject @ProjectId", new SqlParameter("@ProjectId", Id));
 
             return NoContent(); // status code: 204
         }
@@ -152,6 +171,22 @@ namespace ProjectsAPI.Controllers
             var user = await context.Students.FirstOrDefaultAsync(x => x.Email == email);
 
             return user;
+        }
+
+        private SqlCommand GetAddProjectCommand(Project project)
+        {
+            var StudentId = new SqlParameter("@StudentId", project.ApplicationUser);
+            var Title = new SqlParameter("@Title", project.Title);
+            var Description = new SqlParameter("@Description", project.Description);
+            var Year = new SqlParameter("@Year", project.Year);
+            SqlCommand cmd = new SqlCommand("exec sp_CreateMessage @StudentId, @Title, @Description, @Year");
+
+            cmd.Parameters.Add(StudentId);
+            cmd.Parameters.Add(Title);
+            cmd.Parameters.Add(Description);
+            cmd.Parameters.Add(Year);
+
+            return cmd;
         }
     }
 }
