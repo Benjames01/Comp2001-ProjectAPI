@@ -138,3 +138,4 @@ CREATE PROCEDURE [dbo].[sp_InsertProject]
 ## References
 
 - MOQ used to make mock classes in unit tests : https://github.com/moq/moq4
+- Microsoft DotNet Entity Framework Core - https://github.com/dotnet/efcore
