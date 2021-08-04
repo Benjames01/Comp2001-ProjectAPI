@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectsAPI.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProjectsAPI.Tests
 {
@@ -28,6 +25,5 @@ namespace ProjectsAPI.Tests
 
             return config.CreateMapper();
         }
-
     }
 }

@@ -5,11 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using ProjectsAPI.DTOs;
 using ProjectsAPI.Entities;
 using ProjectsAPI.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -41,7 +39,7 @@ namespace ProjectsAPI.Controllers
             var project = mapper.Map<Project>(projectCreation); // Map from creation DTO to project
             project.ApplicationUserId = id;
 
-             var parameters = new List<SqlParameter>
+            var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@StudentId", project.ApplicationUserId),
                 new SqlParameter("@Title", project.Title),
@@ -54,7 +52,7 @@ namespace ProjectsAPI.Controllers
                 parameters.ToArray()).ToListAsync();
 
             // Map to the output DTO, this allows easy future expansion of the project model
-            var projectDTO = mapper.Map<ProjectDTO>( dbProjects[0]);
+            var projectDTO = mapper.Map<ProjectDTO>(dbProjects[0]);
             return new CreatedAtRouteResult("getProject", new { Id = projectDTO.Id }, projectDTO);
         }
 
@@ -88,16 +86,16 @@ namespace ProjectsAPI.Controllers
          * Update an existing project with {Id}
          * Can only be done by a logged in user
          */
+
         [HttpPut("{Id:int}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Put(int Id, [FromBody] ProjectUpdateDTO projectUpdate)
         {
-           
             Project original = await context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
             if (original == null) { return NotFound(); } // status code: 404
 
             // Only update if this project belongs to logged in user
-            if ( original.ApplicationUserId != (await GetStudent()).Id)
+            if (original.ApplicationUserId != (await GetStudent()).Id)
             {
                 return BadRequest();
             }
@@ -110,7 +108,7 @@ namespace ProjectsAPI.Controllers
             {
                 project.Title = original.Title;
             }
-              
+
             if (string.IsNullOrEmpty(project.Description))
             {
                 project.Description = original.Description;
@@ -120,7 +118,7 @@ namespace ProjectsAPI.Controllers
             {
                 project.Year = original.Year;
             }
-  
+
             var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@StudentId", project.ApplicationUserId),
@@ -142,13 +140,13 @@ namespace ProjectsAPI.Controllers
          * Delete project with {Id}
          * Can only be done by a logged in user
         */
+
         [HttpDelete("{Id:int}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Delete(int Id)
-        {          
+        {
             var project = await context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
-            
-            
+
             if (project == null)
             {
                 return NotFound(); // status code: 404
@@ -171,22 +169,6 @@ namespace ProjectsAPI.Controllers
             var user = await context.Students.FirstOrDefaultAsync(x => x.Email == email);
 
             return user;
-        }
-
-        private SqlCommand GetAddProjectCommand(Project project)
-        {
-            var StudentId = new SqlParameter("@StudentId", project.ApplicationUser);
-            var Title = new SqlParameter("@Title", project.Title);
-            var Description = new SqlParameter("@Description", project.Description);
-            var Year = new SqlParameter("@Year", project.Year);
-            SqlCommand cmd = new SqlCommand("exec sp_CreateMessage @StudentId, @Title, @Description, @Year");
-
-            cmd.Parameters.Add(StudentId);
-            cmd.Parameters.Add(Title);
-            cmd.Parameters.Add(Description);
-            cmd.Parameters.Add(Year);
-
-            return cmd;
         }
     }
 }

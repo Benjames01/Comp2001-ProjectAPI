@@ -11,7 +11,7 @@ namespace ProjectsAPI.DTOs
 
         [Required]
         public string Password { get; set; }
-        
+
         [Required]
         [ProgrammeIdExists]
         public int ProgrammeId { get; set; }

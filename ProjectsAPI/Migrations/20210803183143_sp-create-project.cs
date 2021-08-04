@@ -12,7 +12,7 @@ namespace ProjectsAPI.Migrations
                         @Description NVARCHAR(500),
                         @Year NVARCHAR(30),
                         @ResponseMessage INT OUTPUT
-                    AS 
+                    AS
                     BEGIN
                     DECLARE @studentCount INT
                     SET NOCOUNT ON;
@@ -36,7 +36,6 @@ namespace ProjectsAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
         }
     }
 }

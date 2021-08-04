@@ -1,18 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using ProjectsAPI.Controllers;
-using ProjectsAPI.DTOs;
-using ProjectsAPI.Entities;
-using ProjectsAPI.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ProjectsAPI.Tests.UnitTests
@@ -20,11 +11,6 @@ namespace ProjectsAPI.Tests.UnitTests
     [TestClass]
     public class AccountsControllerTests : BaseTest
     {
-
-
-       
-
-
         public static Mock<UserManager<TUser>> MockUserManager<TUser>() where TUser : class
         {
             var store = new Mock<IUserStore<TUser>>();
@@ -74,11 +60,8 @@ namespace ProjectsAPI.Tests.UnitTests
                 new IdentityErrorDescriber(),
                 null);
         }
-
-
     }
 }
-
 
 //private async Task CreateAccount(TestPrep prep)
 //{

@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ProjectsAPI.DTOs;
-using ProjectsAPI.Entities;
 using ProjectsAPI.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -55,7 +54,6 @@ namespace ProjectsAPI.Controllers
         [HttpGet("{studentId:int}/projects")] // [api/students/{studentID}/projects] - get all student's projects
         public async Task<ActionResult<List<ProjectDTO>>> Get(int studentId)
         {
-
             if (!await _context.IsStudentIdValid(studentId))
             {
                 return NotFound(); // student id doesnt exist
@@ -72,12 +70,11 @@ namespace ProjectsAPI.Controllers
             return projectsDTO;
         }
 
-
         [HttpPost("Create")]
         public async Task<ActionResult<AccountToken>> CreateStudent([FromBody] AccountData model)
-        {    
-            var user = new ApplicationUser { UserName = model.EmailAddress, Email = model.EmailAddress, ProgrammeId = model.ProgrammeId};
-            var result = await _userManager.CreateAsync(user, model.Password);        
+        {
+            var user = new ApplicationUser { UserName = model.EmailAddress, Email = model.EmailAddress, ProgrammeId = model.ProgrammeId };
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
@@ -93,7 +90,6 @@ namespace ProjectsAPI.Controllers
         public async Task<ActionResult<AccountToken>> Login([FromBody] AccountLoginDTO model)
         {
             var accountData = _mapper.Map<AccountData>(model);
-
 
             var result = await _signinManager.PasswordSignInAsync(accountData.EmailAddress,
                 accountData.Password, isPersistent: false, lockoutOnFailure: false);
@@ -119,7 +115,6 @@ namespace ProjectsAPI.Controllers
 
             return BuildToken(accountData);
         }
-
 
         private AccountToken BuildToken(AccountData accountData)
         {

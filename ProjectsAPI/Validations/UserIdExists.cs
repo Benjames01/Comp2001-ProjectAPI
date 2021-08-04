@@ -8,7 +8,7 @@ namespace ProjectsAPI.Validations
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // Hook into IServiceProvide to retrieve service
-            var repository = (ApplicationDbContext) validationContext.GetService(typeof(ApplicationDbContext));
+            var repository = (ApplicationDbContext)validationContext.GetService(typeof(ApplicationDbContext));
 
             Task<bool> task = Task.Run<bool>(async () => await repository.IsStudentIdValid((int)value));
             bool result = task.Result;
