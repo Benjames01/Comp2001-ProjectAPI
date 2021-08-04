@@ -34,6 +34,7 @@ functionality.
 | test6@test.com  | Test123!  |
 | test7@test.com | Test123!  |
 | test8@test.com | Test123!  |  
+  
 example body for /auth/api/accounts/login: 
 ```
 {
@@ -67,9 +68,9 @@ CREATE VIEW vw_LectureProgrammeProjectCount AS
     GROUP BY ProgrammeId
 ```
 Usage:
-```SELECT * FROM vw_LectureProgrammeProjectCount where ProgrammeId = 1```
-```SELECT * FROM vw_LectureProgrammeProjectCount where ProgrammeId = 2```
-```SELECT * FROM vw_LectureProgrammeProjectCount where ProgrammeId = 3```
+```SELECT * FROM vw_LectureProgrammeProjectCount where ProgrammeId = 1```  
+```SELECT * FROM vw_LectureProgrammeProjectCount where ProgrammeId = 2```  
+```SELECT * FROM vw_LectureProgrammeProjectCount where ProgrammeId = 3```  
 
 ### Stored procedures
 ##### Delete
