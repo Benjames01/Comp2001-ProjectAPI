@@ -14,7 +14,6 @@ database has an appropriate amount of sample data within it to demonstrate the
 functionality.
 
 ## My API
-
 - http://web.socem.plymouth.ac.uk/COMP2001/bjames/auth/api
 - http://web.socem.plymouth.ac.uk/COMP2001/bjames/auth/api/projects
 - http://web.socem.plymouth.ac.uk/COMP2001/bjames/auth/api/projects/{id}
@@ -22,6 +21,27 @@ functionality.
 - http://web.socem.plymouth.ac.uk/COMP2001/bjames/auth/api/accounts/renewtoken
 - http://web.socem.plymouth.ac.uk/COMP2001/bjames/auth/api/accounts/login
 - http://web.socem.plymouth.ac.uk/COMP2001/bjames/auth/api/accounts/{id}/projects
+
+
+|  emailAddress |password   |
+|---|---|
+| test@test.com  |  Test123! |
+| test1@test.com  |  Test123! |
+| test2@test.com  | Test123!  |
+| test3@test.com  |  Test123! |
+| test4@test.com  |  Test123! |
+| test5@test.com  |  Test123! |
+| test6@test.com  | Test123!  |
+| test7@test.com | Test123!  |
+| test8@test.com | Test123!  |  
+example body for /auth/api/accounts/login: 
+```
+{
+    "emailAddress": "test5@test.com",
+    "password": "Test123!"
+}
+```
+
 
 ## Views, Trigger, Stored Procedure
 #### Trigger
