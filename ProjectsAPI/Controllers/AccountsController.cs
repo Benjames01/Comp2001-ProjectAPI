@@ -51,7 +51,7 @@ namespace ProjectsAPI.Controllers
             return studentsDTO;
         }
 
-        [HttpGet("{studentId:int}/projects")] // [api/students/{studentID}/projects] - get all student's projects
+        [HttpGet("{studentId:int}/projects")] // [api/accounts/{studentId}/projects] - get all student's projects
         public async Task<ActionResult<List<ProjectDTO>>> Get(int studentId)
         {
             if (!await _context.IsStudentIdValid(studentId))
